@@ -1,0 +1,266 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    color: #17211e;
+    background: #ffffff;
+    line-height: 1.7;
+}
+
+
+/* HEADER */
+
+.site-header {
+    min-height: 90px;
+    padding: 0 6%;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    background: #ffffff;
+    border-bottom: 1px solid #e7ebe9;
+}
+
+.brand {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.1;
+}
+
+.brand-name {
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+}
+
+.brand-subtitle {
+    margin-top: 5px;
+
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.25em;
+
+    color: #50615b;
+}
+
+nav {
+    display: flex;
+    gap: 30px;
+}
+
+nav a {
+    color: #17211e;
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+nav a:hover {
+    color: #356854;
+}
+
+
+/* HERO */
+
+.hero {
+    min-height: 82vh;
+    padding: 110px 8%;
+
+    display: flex;
+    align-items: center;
+
+    background:
+        linear-gradient(
+            135deg,
+            #0e1e19,
+            #24483a
+        );
+
+    color: #ffffff;
+}
+
+.hero-content {
+    max-width: 900px;
+}
+
+.eyebrow,
+.section-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+
+    margin-bottom: 20px;
+}
+
+.eyebrow {
+    color: #b9cbc3;
+}
+
+.hero h1 {
+    max-width: 800px;
+
+    font-size: clamp(3.3rem, 7vw, 7rem);
+    line-height: 0.95;
+
+    font-weight: 600;
+
+    margin-bottom: 32px;
+}
+
+.hero-text {
+    max-width: 650px;
+
+    font-size: 1.25rem;
+    color: #d4dfda;
+
+    margin-bottom: 42px;
+}
+
+.button {
+    display: inline-block;
+
+    padding: 14px 25px;
+
+    background: #ffffff;
+    color: #17211e;
+
+    text-decoration: none;
+    font-weight: 600;
+
+    border-radius: 3px;
+}
+
+.button:hover {
+    background: #e7eeeb;
+}
+
+
+/* SECTIONS */
+
+.section {
+    padding: 115px 8%;
+}
+
+.section-inner {
+    max-width: 850px;
+}
+
+.section-label {
+    color: #356854;
+}
+
+.section h2,
+.development h2 {
+    max-width: 780px;
+
+    font-size: clamp(2.2rem, 4vw, 3.8rem);
+    line-height: 1.1;
+
+    margin-bottom: 32px;
+
+    font-weight: 600;
+}
+
+.section p,
+.development p {
+    max-width: 760px;
+
+    font-size: 1.1rem;
+
+    margin-bottom: 22px;
+}
+
+
+/* DARK SECTION */
+
+.section-dark {
+    background: #16211d;
+    color: #ffffff;
+}
+
+.section-dark .section-label {
+    color: #9fbfb1;
+}
+
+.section-dark p {
+    color: #d3ddd9;
+}
+
+
+/* DEVELOPMENT */
+
+.development {
+    padding: 135px 8%;
+
+    background: #edf2ef;
+}
+
+.development-inner {
+    max-width: 850px;
+}
+
+
+/* CONTACT */
+
+.contact {
+    background: #fafbf9;
+}
+
+.contact-note {
+    font-weight: 600;
+}
+
+
+/* FOOTER */
+
+footer {
+    padding: 40px 8%;
+
+    background: #0d1512;
+    color: #aeb9b5;
+
+    font-size: 0.85rem;
+}
+
+footer p {
+    margin-bottom: 5px;
+}
+
+
+/* MOBILE */
+
+@media (max-width: 760px) {
+
+    .site-header {
+        flex-direction: column;
+        align-items: flex-start;
+
+        padding-top: 20px;
+        padding-bottom: 20px;
+    }
+
+    nav {
+        margin-top: 18px;
+        flex-wrap: wrap;
+        gap: 16px;
+    }
+
+    .hero {
+        min-height: 72vh;
+        padding: 85px 7%;
+    }
+
+    .section,
+    .development {
+        padding: 80px 7%;
+    }
+
+}

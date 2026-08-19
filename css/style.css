@@ -1,37 +1,39 @@
-/* ==========================================================
+/* =========================================================
    SHIHAN PUTTING SYSTEM
    Developed by St Andrews Dynamics Ltd
-   Version 0.1
-========================================================== */
+   Version 0.4
+========================================================= */
 
 
-/* ==========================================================
+/* =========================================================
    DESIGN VARIABLES
-========================================================== */
+========================================================= */
 
 :root {
 
-    --colour-primary: #0F7B5F;
-    --colour-primary-dark: #0B604A;
+    --green: #0D8A68;
+    --green-dark: #07634C;
+    --green-light: #8FE0C5;
 
-    --colour-text: #1F2937;
-    --colour-muted: #5F6B76;
+    --ink: #192532;
+    --muted: #65717C;
 
-    --colour-background: #FFFFFF;
-    --colour-light: #F5F9F7;
+    --white: #FFFFFF;
 
-    --colour-border: #E5E7EB;
+    --light: #F4F9F7;
+    --line: #E3EAE7;
 
-    --footer-background: #18232D;
+    --dark: #101B21;
+    --footer-dark: #0A1217;
 
-    --max-width: 1100px;
+    --max-width: 1160px;
 
 }
 
 
-/* ==========================================================
+/* =========================================================
    RESET
-========================================================== */
+========================================================= */
 
 * {
     margin: 0;
@@ -44,350 +46,912 @@ html {
 }
 
 body {
-    background: var(--colour-background);
-    color: var(--colour-text);
+
+    background: var(--white);
+    color: var(--ink);
 
     font-family: "Inter", sans-serif;
     line-height: 1.7;
 
     -webkit-font-smoothing: antialiased;
+
+}
+
+img {
+    max-width: 100%;
+    display: block;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
 }
 
 
-/* ==========================================================
-   TYPOGRAPHY
-========================================================== */
+/* =========================================================
+   GENERAL TYPOGRAPHY
+========================================================= */
 
 h1,
-h2 {
+h2,
+h3 {
     font-family: "Montserrat", sans-serif;
-    font-weight: 700;
-    line-height: 1.1;
 }
 
 p {
     margin-bottom: 20px;
 }
 
-a {
-    text-decoration: none;
-}
 
-
-/* ==========================================================
+/* =========================================================
    GENERAL LAYOUT
-========================================================== */
+========================================================= */
 
 .container {
-    width: min(90%, var(--max-width));
+
+    width: min(88%, var(--max-width));
+
     margin: 0 auto;
+
+}
+
+.section {
+
+    padding: 140px 0;
+
+}
+
+.section-label {
+
+    margin-bottom: 25px;
+
+    color: var(--green);
+
+    font-size: 0.76rem;
+    font-weight: 600;
+
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+
+}
+
+.section h2 {
+
+    max-width: 820px;
+
+    margin-bottom: 42px;
+
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    font-weight: 700;
+
+    line-height: 1.06;
+    letter-spacing: -0.03em;
+
 }
 
 
-/* ==========================================================
+/* =========================================================
    HEADER
-========================================================== */
+========================================================= */
 
 .site-header {
-    width: 100%;
 
-    padding: 18px 5%;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
 
     display: flex;
     justify-content: space-between;
     align-items: center;
 
-    background: rgba(255, 255, 255, 0.96);
+    padding: 18px 5%;
 
-    border-bottom: 1px solid var(--colour-border);
+    background: rgba(255, 255, 255, 0.94);
 
-    position: sticky;
-    top: 0;
-    z-index: 100;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+
+    border-bottom: 1px solid var(--line);
+
 }
 
 
-/* ==========================================================
+/* =========================================================
    BRAND
-========================================================== */
+========================================================= */
 
 .brand {
+
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+
 }
 
 .brand-name {
-    font-size: 2.6rem;
 
-    letter-spacing: 0.18em;
+    font-size: 2.3rem;
+    font-weight: 700;
 
-    color: var(--colour-text);
+    line-height: 1;
+
+    letter-spacing: 0.22em;
+
+    color: var(--ink);
+
 }
 
 .brand-line {
+
+    display: block;
+
     width: 100%;
-    height: 4px;
+    height: 3px;
 
-    background: var(--colour-primary);
+    margin: 10px 0 7px;
 
-    border-radius: 20px;
-
-    margin: 8px 0 6px;
+    background: var(--green);
 
     transform-origin: left;
-    animation: growLine 0.8s ease forwards;
+
+    animation: lineGrow 0.8s ease forwards;
+
 }
 
 .brand-subtitle {
-    margin: 0;
 
-    font-size: 0.8rem;
+    font-size: 0.72rem;
     font-weight: 500;
 
-    letter-spacing: 0.25em;
+    letter-spacing: 0.28em;
     text-transform: uppercase;
 
-    color: var(--colour-muted);
+    color: var(--muted);
 
-    opacity: 0;
-    animation: fadeIn 0.8s ease forwards;
-    animation-delay: 0.35s;
 }
 
 
-/* ==========================================================
+/* =========================================================
    NAVIGATION
-========================================================== */
+========================================================= */
 
 nav {
+
     display: flex;
     gap: 32px;
+
 }
 
 nav a {
+
     position: relative;
 
-    color: var(--colour-text);
+    color: var(--ink);
 
-    font-size: 0.95rem;
+    font-size: 0.92rem;
     font-weight: 500;
 
     transition: color 0.25s ease;
+
 }
 
 nav a:hover {
-    color: var(--colour-primary);
+
+    color: var(--green);
+
 }
 
 nav a::after {
+
     content: "";
 
     position: absolute;
 
     left: 0;
-    bottom: -5px;
+    bottom: -6px;
 
     width: 0;
     height: 2px;
 
-    background: var(--colour-primary);
+    background: var(--green);
 
     transition: width 0.25s ease;
+
 }
 
 nav a:hover::after {
+
     width: 100%;
+
 }
 
 
-/* ==========================================================
+/* =========================================================
    HERO
-========================================================== */
+========================================================= */
 
 .hero {
-    min-height: 76vh;
+
+    position: relative;
+
+    min-height: calc(100vh - 100px);
 
     display: flex;
     align-items: center;
-    justify-content: center;
 
-    text-align: center;
+    padding: 100px 7%;
 
-    padding: 70px 20px;
+    overflow: hidden;
+
+    background-image: url("../images/shihan-hero.jpg");
+
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+
+    color: var(--white);
+
+}
+
+.hero-overlay {
+
+    position: absolute;
+    inset: 0;
 
     background:
-        radial-gradient(
-            circle at top,
-            #F9FCFA 0%,
-            #F2F7F4 48%,
-            #FFFFFF 100%
+        linear-gradient(
+            90deg,
+            rgba(7, 20, 18, 0.84) 0%,
+            rgba(7, 20, 18, 0.68) 34%,
+            rgba(7, 20, 18, 0.28) 68%,
+            rgba(7, 20, 18, 0.07) 100%
         );
+
 }
 
 .hero-content {
-    max-width: 900px;
+
+    position: relative;
+    z-index: 2;
+
+    width: min(100%, 720px);
+
+    margin: 0;
+
+    text-align: left;
+
 }
 
-.hero-label {
-    margin-bottom: 26px;
+.eyebrow {
 
-    font-size: 0.78rem;
+    margin-bottom: 28px;
+
+    color: var(--green-light);
+
+    font-size: 0.76rem;
     font-weight: 600;
 
-    letter-spacing: 0.22em;
+    letter-spacing: 0.24em;
     text-transform: uppercase;
 
-    color: var(--colour-primary);
-
     opacity: 0;
+
     animation: fadeUp 0.7s ease forwards;
-    animation-delay: 0.2s;
+    animation-delay: 0.15s;
+
 }
 
-.hero h2 {
-    margin-bottom: 30px;
+.hero h1 {
 
-    font-size: clamp(3rem, 7vw, 5.8rem);
+    max-width: 720px;
 
-    line-height: 1.08;
+    margin-bottom: 32px;
 
-    color: var(--colour-text);
+    color: var(--white);
+
+    font-size: clamp(3.5rem, 7vw, 6.6rem);
+    font-weight: 700;
+
+    line-height: 0.98;
+    letter-spacing: -0.04em;
+
+    text-shadow:
+        0 3px 18px rgba(0, 0, 0, 0.16);
 
     opacity: 0;
+
     animation: fadeUp 0.8s ease forwards;
-    animation-delay: 0.45s;
+    animation-delay: 0.35s;
+
 }
 
-.hero-text {
-    margin-bottom: 40px;
+.hero-copy {
 
-    font-size: 1.15rem;
+    max-width: 520px;
 
-    color: var(--colour-muted);
+    margin: 0 0 38px;
+
+    color: rgba(255, 255, 255, 0.86);
+
+    font-size: 1.12rem;
 
     opacity: 0;
+
     animation: fadeUp 0.8s ease forwards;
-    animation-delay: 0.7s;
+    animation-delay: 0.60s;
+
 }
 
 
-/* ==========================================================
+/* =========================================================
    BUTTON
-========================================================== */
+========================================================= */
 
 .button {
+
     display: inline-block;
 
-    padding: 14px 32px;
-
-    background: var(--colour-primary);
-    color: #FFFFFF;
+    padding: 15px 32px;
 
     border-radius: 999px;
+
+    background: var(--green);
+    color: var(--white);
 
     font-weight: 600;
 
     transition:
-        background 0.25s ease,
         transform 0.25s ease,
+        background 0.25s ease,
         box-shadow 0.25s ease;
 
     opacity: 0;
+
     animation: fadeUp 0.8s ease forwards;
-    animation-delay: 0.95s;
+    animation-delay: 0.85s;
+
 }
 
 .button:hover {
-    background: var(--colour-primary-dark);
+
+    background: var(--green-dark);
 
     transform: translateY(-2px);
 
-    box-shadow: 0 8px 18px rgba(15, 123, 95, 0.18);
+    box-shadow:
+        0 12px 30px rgba(13, 138, 104, 0.18);
+
 }
 
 
-/* ==========================================================
-   CONTENT SECTIONS
-========================================================== */
+/* =========================================================
+   SCROLL INDICATOR
+========================================================= */
 
-.section {
-    padding: 100px 20px;
+.scroll-indicator {
+
+    position: absolute;
+
+    left: 50%;
+    bottom: 30px;
+
+    width: 24px;
+    height: 38px;
+
+    border: 1px solid rgba(255, 255, 255, 0.55);
+
+    border-radius: 20px;
+
+    transform: translateX(-50%);
+
 }
 
-.section.light {
-    background: var(--colour-light);
+.scroll-indicator span {
+
+    position: absolute;
+
+    left: 50%;
+    top: 8px;
+
+    width: 4px;
+    height: 4px;
+
+    border-radius: 50%;
+
+    background: var(--green-light);
+
+    transform: translateX(-50%);
+
+    animation: scrollDot 1.8s infinite;
+
 }
 
-.section-title {
-    margin-bottom: 20px;
 
-    font-size: 0.78rem;
-    font-weight: 600;
+/* =========================================================
+   PHILOSOPHY
+========================================================= */
 
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-
-    color: var(--colour-primary);
+.philosophy {
+    background: var(--white);
 }
 
-.section h2 {
-    max-width: 760px;
+.content-grid {
+
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 80px;
+
+    align-items: start;
+
+}
+
+.lead {
+
+    max-width: 520px;
+
+    font-size: 1.55rem;
+    line-height: 1.5;
+
+}
+
+.body-copy {
+
+    max-width: 560px;
+
+    color: var(--muted);
+
+    font-size: 1.05rem;
+
+}
+
+.body-copy p + p {
+    margin-top: 22px;
+}
+
+
+/* =========================================================
+   DELIBERATE PRACTICE
+========================================================= */
+
+.principles {
+    background: var(--light);
+}
+
+.principles-grid {
+
+    display: grid;
+
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 70px;
+
+    margin-top: 70px;
+
+}
+
+.principle {
+
+    padding-top: 28px;
+
+    border-top: 2px solid var(--green);
+
+}
+
+.principle-number {
+
+    display: block;
 
     margin-bottom: 30px;
 
-    font-size: clamp(2.2rem, 4vw, 3.4rem);
+    color: var(--green);
+
+    font-size: 0.75rem;
+    font-weight: 600;
+
+    letter-spacing: 0.15em;
+
 }
 
-.section p {
-    max-width: 720px;
+.principle h3 {
+
+    margin-bottom: 16px;
+
+    color: var(--ink);
+
+    font-size: 1.6rem;
+    font-weight: 700;
+
+}
+
+.principle p {
+    color: var(--muted);
+}
+
+
+/* =========================================================
+   STATEMENT
+========================================================= */
+
+.statement {
+
+    padding: 160px 0;
+
+    background: var(--dark);
+    color: var(--white);
+
+}
+
+.statement p {
+
+    margin-bottom: 15px;
+
+    font-size: clamp(2.2rem, 5vw, 4.3rem);
+
+    line-height: 1.1;
+
+}
+
+.statement p span {
+    color: #8BA39A;
+}
+
+.statement h2 {
+
+    color: var(--green);
+
+    font-size: clamp(3rem, 7vw, 6.5rem);
+    font-weight: 700;
+
+    line-height: 1;
+
+}
+
+
+/* =========================================================
+   HERITAGE / ST ANDREWS
+========================================================= */
+
+.heritage {
+
+    position: relative;
+
+    min-height: 760px;
+
+    display: flex;
+    align-items: flex-end;
+
+    padding: 90px 7%;
+
+    background-image: url("../images/st-andrews.jpg");
+
+    background-size: cover;
+
+    /*
+       The Swilcan Bridge sits on the left side of the original
+       image. This crop shifts the focal point towards the bridge.
+    */
+    background-position: 22% center;
+
+    background-repeat: no-repeat;
+
+    color: var(--white);
+
+}
+
+.heritage-overlay {
+
+    position: absolute;
+    inset: 0;
+
+    background:
+
+        linear-gradient(
+            90deg,
+            rgba(7, 18, 16, 0.56) 0%,
+            rgba(7, 18, 16, 0.24) 38%,
+            rgba(7, 18, 16, 0.04) 75%
+        ),
+
+        linear-gradient(
+            0deg,
+            rgba(7, 18, 16, 0.72) 0%,
+            rgba(7, 18, 16, 0.20) 45%,
+            rgba(7, 18, 16, 0.02) 72%
+        );
+
+}
+
+.heritage-content {
+
+    position: relative;
+    z-index: 2;
+
+    max-width: 670px;
+
+}
+
+.heritage .section-label {
+
+    color: #A4E7D0;
+
+}
+
+.heritage h2 {
+
+    margin-bottom: 24px;
+
+    font-size: clamp(3.2rem, 6vw, 5.8rem);
+    font-weight: 700;
+
+    line-height: 1;
+
+    text-shadow:
+        0 2px 15px rgba(0, 0, 0, 0.16);
+
+}
+
+.heritage p:not(.section-label) {
+
+    max-width: 560px;
+
+    color: rgba(255, 255, 255, 0.88);
 
     font-size: 1.08rem;
 
-    color: var(--colour-muted);
 }
 
 
-/* ==========================================================
+/* =========================================================
+   DEVELOPMENT
+========================================================= */
+
+.development {
+    background: var(--light);
+}
+
+.development-copy {
+
+    max-width: 680px;
+
+    margin-bottom: 65px;
+
+    color: var(--muted);
+
+    font-size: 1.1rem;
+
+}
+
+.timeline {
+
+    position: relative;
+
+    display: grid;
+
+    grid-template-columns: repeat(4, 1fr);
+
+    gap: 25px;
+
+    max-width: 950px;
+
+}
+
+.timeline::before {
+
+    content: "";
+
+    position: absolute;
+
+    top: 9px;
+
+    left: 10px;
+    right: 10px;
+
+    height: 1px;
+
+    background: #CAD5D0;
+
+}
+
+.timeline-item {
+
+    position: relative;
+    z-index: 2;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 14px;
+
+    color: #88938E;
+
+}
+
+.dot {
+
+    width: 18px;
+    height: 18px;
+
+    border-radius: 50%;
+
+    background: var(--light);
+
+    border: 2px solid #AAB8B2;
+
+}
+
+.timeline-item.active {
+
+    color: var(--ink);
+
+    font-weight: 500;
+
+}
+
+.timeline-item.active .dot {
+
+    background: var(--green);
+
+    border-color: var(--green);
+
+}
+
+
+/* =========================================================
+   COMPANY
+========================================================= */
+
+.company {
+    background: var(--white);
+}
+
+.company p:not(.section-label) {
+
+    max-width: 700px;
+
+    color: var(--muted);
+
+    font-size: 1.1rem;
+
+}
+
+
+/* =========================================================
    CONTACT
-========================================================== */
+========================================================= */
 
-#contact {
-    border-top: 1px solid rgba(31, 41, 55, 0.04);
+.contact {
+
+    background: var(--green);
+    color: var(--white);
+
+}
+
+.contact .section-label {
+    color: rgba(255, 255, 255, 0.72);
+}
+
+.contact h2 {
+    max-width: 850px;
+}
+
+.contact p {
+
+    max-width: 650px;
+
+    color: rgba(255, 255, 255, 0.84);
+
+    font-size: 1.08rem;
+
 }
 
 
-/* ==========================================================
+/* =========================================================
    FOOTER
-========================================================== */
+========================================================= */
 
 footer {
-    padding: 45px 20px;
 
-    background: var(--footer-background);
-    color: #FFFFFF;
+    padding: 70px 6%;
+
+    background: var(--footer-dark);
+    color: #C7CFCC;
+
 }
 
-footer .container {
-    text-align: center;
+.footer-inner {
+
+    max-width: var(--max-width);
+
+    margin: 0 auto;
+
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 45px;
+
 }
 
-footer p {
-    margin-bottom: 7px;
+.footer-brand,
+.footer-company {
 
-    font-size: 0.88rem;
+    display: flex;
+    flex-direction: column;
 
-    opacity: 0.88;
 }
 
-footer strong {
-    letter-spacing: 0.04em;
+.footer-brand strong {
+
+    color: var(--white);
+
+    font-size: 1.6rem;
+
+    letter-spacing: 0.2em;
+
+}
+
+.footer-brand span {
+
+    margin-top: 4px;
+
+    font-size: 0.7rem;
+
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+
+}
+
+.footer-company span {
+
+    margin-bottom: 6px;
+
+    color: #85918C;
+
+    font-size: 0.72rem;
+
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+
+}
+
+.footer-company strong {
+    color: var(--white);
+}
+
+.footer-values {
+
+    font-size: 0.78rem;
+
+    letter-spacing: 0.08em;
+
+}
+
+.footer-values span {
+
+    margin: 0 8px;
+
+    color: var(--green);
+
+}
+
+.copyright {
+
+    margin: 0;
+
+    text-align: right;
+
+    color: #7E8985;
+
+    font-size: 0.75rem;
+
 }
 
 
-/* ==========================================================
+/* =========================================================
    ANIMATIONS
-========================================================== */
+========================================================= */
 
 @keyframes fadeUp {
 
@@ -403,19 +967,7 @@ footer strong {
 
 }
 
-@keyframes fadeIn {
-
-    from {
-        opacity: 0;
-    }
-
-    to {
-        opacity: 1;
-    }
-
-}
-
-@keyframes growLine {
+@keyframes lineGrow {
 
     from {
         transform: scaleX(0);
@@ -427,39 +979,37 @@ footer strong {
 
 }
 
+@keyframes scrollDot {
 
-/* ==========================================================
-   ACCESSIBILITY
-========================================================== */
-
-@media (prefers-reduced-motion: reduce) {
-
-    html {
-        scroll-behavior: auto;
+    0% {
+        opacity: 0;
+        transform: translate(-50%, 0);
     }
 
-    *,
-    *::before,
-    *::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
+    30% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+        transform: translate(-50%, 15px);
     }
 
 }
 
 
-/* ==========================================================
+/* =========================================================
    TABLET
-========================================================== */
+========================================================= */
 
 @media (max-width: 900px) {
 
     .site-header {
+
         flex-direction: column;
-        align-items: center;
 
         gap: 18px;
+
     }
 
     .brand {
@@ -471,22 +1021,66 @@ footer strong {
     }
 
     nav {
-        justify-content: center;
+
         flex-wrap: wrap;
 
-        gap: 20px;
+        justify-content: center;
+
+        gap: 18px;
+
     }
 
     .hero {
-        min-height: 68vh;
+        min-height: 82vh;
+    }
+
+    .content-grid {
+
+        grid-template-columns: 1fr;
+
+        gap: 35px;
+
+    }
+
+    .principles-grid {
+
+        grid-template-columns: 1fr;
+
+        gap: 45px;
+
+    }
+
+    .heritage {
+
+        min-height: 650px;
+
+        background-position: 16% center;
+
+    }
+
+    .footer-inner {
+
+        grid-template-columns: 1fr;
+
+        text-align: center;
+
+    }
+
+    .footer-brand,
+    .footer-company {
+        align-items: center;
+    }
+
+    .copyright {
+        text-align: center;
     }
 
 }
 
 
-/* ==========================================================
+/* =========================================================
    MOBILE
-========================================================== */
+========================================================= */
 
 @media (max-width: 600px) {
 
@@ -495,45 +1089,140 @@ footer strong {
     }
 
     .brand-name {
-        font-size: 2rem;
+        font-size: 1.8rem;
     }
 
     .brand-subtitle {
-        font-size: 0.68rem;
+        font-size: 0.65rem;
     }
 
     nav {
-        gap: 15px;
+        gap: 14px;
     }
 
     nav a {
-        font-size: 0.85rem;
+        font-size: 0.82rem;
     }
 
     .hero {
-        min-height: 65vh;
 
-        padding: 60px 20px;
+        min-height: 78vh;
+
+        padding: 80px 24px;
+
+        background-position: 58% center;
+
     }
 
-    .hero h2 {
-        font-size: 3rem;
+    .hero-overlay {
+
+        background:
+            linear-gradient(
+                90deg,
+                rgba(7, 20, 18, 0.84) 0%,
+                rgba(7, 20, 18, 0.62) 70%,
+                rgba(7, 20, 18, 0.35) 100%
+            );
+
     }
 
-    .hero-text {
+    .hero h1 {
+        font-size: 3.4rem;
+    }
+
+    .hero-copy {
         font-size: 1rem;
     }
 
     .section {
-        padding: 75px 20px;
+        padding: 95px 0;
     }
 
     .section h2 {
-        font-size: 2.1rem;
+        font-size: 2.4rem;
     }
 
-    .section p {
-        font-size: 1rem;
+    .lead {
+        font-size: 1.25rem;
+    }
+
+    .statement {
+        padding: 105px 0;
+    }
+
+    .heritage {
+
+        min-height: 560px;
+
+        padding: 70px 24px;
+
+        /*
+           On phones we shift even further left
+           to keep the bridge in view.
+        */
+        background-position: 12% center;
+
+    }
+
+    .heritage h2 {
+        font-size: 3rem;
+    }
+
+    .timeline {
+
+        grid-template-columns: 1fr;
+
+        gap: 30px;
+
+    }
+
+    .timeline::before {
+
+        top: 8px;
+        bottom: 8px;
+
+        left: 8px;
+        right: auto;
+
+        width: 1px;
+        height: auto;
+
+    }
+
+    .timeline-item {
+
+        flex-direction: row;
+
+        align-items: center;
+
+    }
+
+    .footer-values {
+        line-height: 1.8;
+    }
+
+}
+
+
+/* =========================================================
+   ACCESSIBILITY
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    html {
+        scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+
+        transition-duration: 0.01ms !important;
+
     }
 
 }

@@ -227,7 +227,7 @@ section .col-body {
   gap:12px;
   margin-bottom:18px;
   color:var(--blue);
-  font-size:12px;
+  font-size:17px;
   font-weight:800;
   letter-spacing:.18em;
   text-transform:uppercase}
@@ -285,7 +285,7 @@ h2::after {
 .step .num {
   color:var(--gold);
   font-family:Montserrat,sans-serif;
-  font-size:22px;
+  font-size:36px;
   line-height:1;
   font-weight:800;
   letter-spacing:.12em}
@@ -546,21 +546,17 @@ nav a { white-space: nowrap; }
 .tier { display: grid; grid-template-columns: 190px minmax(0,1fr); gap: 28px; padding: 28px 0; border-bottom: 1px solid var(--line); }
 .tier h3 { color: var(--navy); font-size: 22px; line-height: 1.3; }
 .tier p { font-size: 18px; }
-.way { display: flex; flex-direction: column; }
+.way { display: flex; flex-direction: column; background: #EEF4FA; }
 .way .kicker { color: var(--muted); font-size: 11px; letter-spacing: .15em; text-transform: uppercase; font-weight: 700; }
 .way p + p { margin-top: 14px; }
 .way .bullets { margin-top: 6px; }
 .way .note { margin-top: auto; padding-top: 24px; font-size: 15px; color: var(--muted); }
-.way.premium { background: var(--navy); }
-.way.premium h3 { color: #FFF; }
-.way.premium p, .way.premium li { color: #E5ECF5; }
-.way.premium .kicker { color: var(--gold-light); }
 .gain { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 34px; margin-top: 34px; }
 .gain .fig { font-size: 52px; line-height: 1; font-weight: 750; color: var(--navy); }
 .gain h3 { font-size: 22px; color: var(--navy); margin: 12px 0 8px; }
 .gain p { font-size: 17px; }
 .product .mark.label { width: 180px; border: 1px solid var(--line); }
-.lead .kanji { color: var(--navy); font-size: 64px; line-height: 1.2; }
+.lead .kanji { color: var(--gold); font-size: 64px; line-height: 1.2; }
 .contacts { grid-template-columns: 1fr; }
 .contacts a { overflow-wrap: anywhere; }
 /* Give longer ShiHAN cards the full content width. */

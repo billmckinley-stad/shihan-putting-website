@@ -1,42 +1,42 @@
 /* Adapted from the approved St Andrews Dynamics v5 design system. */
 :root  {
-  
+
   --navy: #1F3864;
-  
+
   --navy-deep: #102541;
-  
+
   --navy-black: #0B182B;
-  
+
   --blue: #3B6AA0;
-  
+
   --blue-soft: #6E8FB6;
-  
+
   --gold: #C9A227;
-  
+
   --gold-light: #E0C969;
-  
+
   --pale: #DDE1E8;
-  
+
   --mist: #F3F5F8;
-  
+
   --mist-blue: #EDF2F7;
-  
+
   --body: #2E3440;
-  
+
   --muted: #697180;
-  
+
   --white: #FFFFFF;
-  
+
   --line: rgba(31, 56, 100, .12);
-  
+
   --shadow: 0 22px 70px rgba(19, 34, 60, .12);
-  
+
   --shadow-soft: 0 12px 36px rgba(19, 34, 60, .08);
-  
+
   --radius: 18px;
-  
+
   --max: 1160px;
-  
+
 }
 
 *  {

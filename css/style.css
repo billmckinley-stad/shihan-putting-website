@@ -556,7 +556,7 @@ nav a { white-space: nowrap; }
 .gain h3 { font-size: 22px; color: var(--navy); margin: 12px 0 8px; }
 .gain p { font-size: 17px; }
 .product .mark.label { width: 180px; border: 1px solid var(--line); }
-.lead .kanji { color: var(--gold); font-size: 64px; line-height: 1.2; }
+#name .lead .kanji { color: var(--gold); font-size: 64px; line-height: 1.2; }
 .contacts { grid-template-columns: 1fr; }
 .contacts a { overflow-wrap: anywhere; }
 /* Give longer ShiHAN cards the full content width. */

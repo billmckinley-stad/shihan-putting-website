@@ -692,12 +692,19 @@ html:not(.js) .dots{display:none}
     <h2>Be first to putt with <span class="brandname"><b>ShiHAN</b> <i>Putting Lab</i></span>.</h2>
     <div class="rule"></div>
     <p class="lede">Golfers, coaches, clubs and manufacturers: follow the development or join the trials.</p>
-    <form class="signup" id="signup" novalidate>
+    <form class="signup" id="signup" action="https://formsubmit.co/info@shihanputting.com" method="POST" novalidate>
+      <input type="hidden" name="_subject" value="New ShiHAN Putting Lab registration of interest">
+      <input type="hidden" name="_cc" value="bill@standrewsdynamics.com,andy@standrewsdynamics.com">
+      <input type="hidden" name="_template" value="table">
+      <input type="hidden" name="_next" value="https://billmckinley-stad.github.io/shihan-putting-website/?registered=1#register">
+      <input type="hidden" name="_url" value="https://billmckinley-stad.github.io/shihan-putting-website/">
+      <input type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true" style="display:none">
       <label><span>Name</span><input type="text" name="name" autocomplete="name" placeholder="Name" required></label>
       <label><span>Email</span><input type="email" name="email" autocomplete="email" placeholder="Email" required></label>
       <button class="btn" type="submit">Register</button>
       <p class="formmsg" role="status" aria-live="polite"></p>
     </form>
+    <p style="max-width:600px;margin:14px auto 0;font-size:14px;line-height:1.5">We’ll use your name and email to contact you about ShiHAN development and trials. Registrations are processed by <a href="https://formsubmit.co/privacy.pdf" style="color:inherit">FormSubmit</a> and emailed to the ShiHAN team. To withdraw your interest, email <a href="mailto:info@shihanputting.com" style="color:inherit">info@shihanputting.com</a>.</p>
     <p class="trials">Field trials under way. Product launch 2027.</p>
     <div class="contacts">
       <a href="mailto:info@standrewsdynamics.com">info@standrewsdynamics.com</a><br>
@@ -828,14 +835,16 @@ html:not(.js) .dots{display:none}
     if('IntersectionObserver' in window){var io2=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){go();io2.disconnect();}});},{threshold:.3});io2.observe(c);}else go();
   });
   var f=document.getElementById('signup');
+  if(new URLSearchParams(window.location.search).get('registered')==='1'){
+    f.querySelector('.formmsg').textContent='Thank you. Your interest has been registered.';
+  }
   f.addEventListener('submit',function(e){
-    e.preventDefault();
     var fn=f.querySelector('[name=name]'),fe=f.querySelector('[name=email]'),nm=fn.value.trim(),em=fe.value.trim(),ok=true,msg=f.querySelector('.formmsg');
     fn.classList.toggle('bad',!nm); if(!nm)ok=false;
     var good=/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em); fe.classList.toggle('bad',!good); if(!good)ok=false;
-    if(!ok){msg.textContent='Please add your name and a valid email.';return;}
-    msg.textContent='Thanks, '+nm.split(' ')[0]+'. Draft page: sign-ups go live with the website.';
-    f.querySelectorAll('input,button').forEach(function(x){x.disabled=true;});
+    if(!ok){e.preventDefault();msg.textContent='Please add your name and a valid email.';(!nm?fn:fe).focus();return;}
+    fn.value=nm;fe.value=em;
+    msg.textContent='Sending your registration. Please complete the spam check if prompted.';
   });
 
   var els=document.querySelectorAll('.reveal');

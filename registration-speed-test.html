@@ -27,8 +27,8 @@
 </form><button type="button" id="candidate-confirm" disabled>Record Formspree thank-you page seen</button></section>
 <section aria-labelledby="baseline-heading">
 <h2 id="baseline-heading">Current FormSubmit service</h2>
-<p class="note">This isolated baseline test opens FormSubmit’s existing robot check in a new tab. When its thank-you or return page appears, return here and record the result, just as for Formspree.</p>
-<form id="baseline" action="https://formsubmit.co/info@shihanputting.com" method="POST" target="shihan-formsubmit-test">
+<p class="note">This isolated baseline test opens FormSubmit’s existing robot check in this tab. Its return confirms the test completed; browser request timing is used to measure processing separately from the robot check.</p>
+<form id="baseline" action="https://formsubmit.co/info@shihanputting.com" method="POST" target="_self">
 <input type="hidden" name="name" value="TEST ONLY — ShiHAN speed comparison baseline">
 <input type="hidden" name="email" value="bill@standrewsdynamics.com">
 <input type="hidden" name="_subject" value="TEST ONLY — ShiHAN speed comparison baseline">
@@ -52,10 +52,10 @@ function runId(){return new Date().toISOString().replace(/[:.]/g,'-');}
 render();
 const baseline=document.getElementById('baseline');
 document.getElementById('baseline-next').value=new URL('registration-speed-test.html?baseline_return=1',location.href).href;
-if(new URLSearchParams(location.search).get('baseline_return')==='1')document.getElementById('baseline-result').textContent='FormSubmit returned to this page. Record the result in the original test tab.';
+if(new URLSearchParams(location.search).get('baseline_return')==='1'){try{const p=JSON.parse(sessionStorage.getItem('shihan-speed-baseline-pending')||'null');if(p){const seconds=((Date.now()-p.started)/1000).toFixed(2);record({id:p.id,service:'FormSubmit',interval:'Submit → return (includes robot check)',seconds,outcome:'Returned from service',startedAt:new Date(p.started).toISOString(),confirmedAt:new Date().toISOString()});document.getElementById('baseline-result').textContent='Returned after '+seconds+' seconds, including the robot check. Processing-only time is measured in the browser network log.';sessionStorage.removeItem('shihan-speed-baseline-pending');}}catch{}}
 const pending={};
 function wire(formId,service){const form=document.getElementById(formId),button=document.getElementById(formId+'-confirm'),result=document.getElementById(formId+'-result');
-form.addEventListener('submit',e=>{if(!form.reportValidity()){e.preventDefault();return;}const id=runId();pending[formId]={id,started:Date.now()};for(const [name,value] of Object.entries({test_run:id,test_started_at:new Date().toISOString()})){let field=form.querySelector('[name="'+name+'"]');if(!field){field=document.createElement('input');field.type='hidden';field.name=name;form.append(field);}field.value=value;}button.disabled=false;result.textContent='Test started. Complete the hosted robot check, then return and record the thank-you page.';});
+form.addEventListener('submit',e=>{if(!form.reportValidity()){e.preventDefault();return;}const id=runId();pending[formId]={id,started:Date.now()};if(formId==='baseline'){try{sessionStorage.setItem('shihan-speed-baseline-pending',JSON.stringify(pending[formId]));}catch{}}for(const [name,value] of Object.entries({test_run:id,test_started_at:new Date().toISOString()})){let field=form.querySelector('[name="'+name+'"]');if(!field){field=document.createElement('input');field.type='hidden';field.name=name;form.append(field);}field.value=value;}button.disabled=false;result.textContent='Test started. Complete the hosted robot check, then return and record the thank-you page.';});
 button.addEventListener('click',()=>{const p=pending[formId];if(!p)return;const seconds=((Date.now()-p.started)/1000).toFixed(2);record({id:p.id,service,interval:'Submit → manually recorded thank-you (includes robot check)',seconds,outcome:'Thank-you page reported',startedAt:new Date(p.started).toISOString(),confirmedAt:new Date().toISOString()});result.textContent='Recorded '+seconds+' seconds including the robot check and time to return here. Inbox delivery still needs verification.';button.disabled=true;delete pending[formId];});}
 wire('candidate','Formspree');wire('baseline','FormSubmit');
 if(/^https:\/\/formspree\.io\/f\/[a-zA-Z0-9]+$/.test(CONFIG.endpoint)){document.getElementById('candidate').action=CONFIG.endpoint;document.getElementById('candidate-send').disabled=false;document.getElementById('setup').textContent='The hosted robot check remains enabled in Formspree.';}else{document.getElementById('candidate').addEventListener('submit',e=>e.preventDefault());}

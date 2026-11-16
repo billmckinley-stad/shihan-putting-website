@@ -791,21 +791,16 @@ section{scroll-margin-top:62px}
     <h2>Be first to putt with <span class="brandname"><b>ShiHAN</b> <i>Putting Lab</i></span>.</h2>
     <div class="rule"></div>
     <p class="lede">Golfers, coaches, clubs and manufacturers: follow the development or join the trials.</p>
-    <!-- FormSubmit: sign-ups are emailed to the address in action="..." below. Bill: change it if your live form uses a different address. -->
-    <form class="signup" id="signup" action="https://formsubmit.co/info@shihanputting.com" method="POST" novalidate>
-      <input type="hidden" name="_subject" value="New ShiHAN Putting Lab registration of interest">
-      <input type="hidden" name="_cc" value="bill@standrewsdynamics.com,andy@standrewsdynamics.com">
-      <input type="hidden" name="_template" value="table">
-      <input type="hidden" name="_next" value="https://www.shihanputting.com/?registered=1#register">
-      <input type="hidden" name="_url" value="https://www.shihanputting.com/">
-      <input type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true" style="display:none">
-      <label><span>Name</span><input type="text" name="name" autocomplete="name" placeholder="Name" required></label>
-      <label><span>Email</span><input type="email" name="email" autocomplete="email" placeholder="Email" required></label>
+    <form class="signup" id="signup" action="https://formspree.io/f/moedeoow" method="POST" novalidate>
+      <input type="hidden" name="subject" value="New ShiHAN Putting Lab registration of interest">
+      <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true" style="display:none">
+      <label><span>Name</span><input type="text" name="name" maxlength="150" autocomplete="name" placeholder="Name" required></label>
+      <label><span>Email</span><input type="email" name="email" maxlength="254" autocomplete="email" placeholder="Email" required></label>
       <button class="btn" type="submit">Register</button>
       <p class="formmsg" role="status" aria-live="polite"></p>
     </form>
     <p class="privacy">We'll use your name and email to contact you about <span class="sh">ShiHAN</span> development and trials.
-      Registrations are processed by <a href="https://formsubmit.co/privacy.pdf" target="_blank" rel="noopener">FormSubmit</a> and emailed to the <span class="sh">ShiHAN</span> team.
+      Registrations are processed by <a href="https://formspree.io/legal/privacy-policy/" target="_blank" rel="noopener">Formspree</a> and shared with the <span class="sh">ShiHAN</span> team. We keep your name and email in our registration list.
       To withdraw your interest, email <a href="mailto:info@shihanputting.com">info@shihanputting.com</a>.</p>
     <p class="trials">Field trials under way. Product launch 2027.</p>
     <div class="contacts">
@@ -950,21 +945,28 @@ section{scroll-margin-top:62px}
   if(document.fonts&&document.fonts.ready)document.fonts.ready.then(fit);
   setTimeout(fit,600);
   var f=document.getElementById('signup');
-  if(new URLSearchParams(window.location.search).get('registered')==='1'){
-    f.querySelector('.formmsg').textContent='Thanks for registering your interest. We’ll be in touch.';
-  }
-  f.addEventListener('submit',function(e){
-    var fn=f.querySelector('[name=name]'),fe=f.querySelector('[name=email]'),nm=fn.value.trim(),em=fe.value.trim(),ok=true,msg=f.querySelector('.formmsg');
-    fn.classList.toggle('bad',!nm); if(!nm)ok=false;
-    var good=/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em); fe.classList.toggle('bad',!good); if(!good)ok=false;
-    if(!ok){
-      e.preventDefault();
-      msg.textContent='Please add your name and a valid email.';
-      (!nm?fn:fe).focus();
-      return;
-    }
+  var registrationBusy=false;
+  f.addEventListener('submit',async function(e){
+    e.preventDefault();
+    if(registrationBusy)return;
+    var fn=f.querySelector('[name=name]'),fe=f.querySelector('[name=email]'),nm=fn.value.trim(),em=fe.value.trim(),msg=f.querySelector('.formmsg');
+    var good=/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)&&em.length<=254;
+    fn.classList.toggle('bad',!nm||nm.length>150);fe.classList.toggle('bad',!good);
+    if(!nm||nm.length>150||!good){msg.textContent='Please add your name and a valid email.';(!nm?fn:fe).focus();return;}
     fn.value=nm;fe.value=em;
-    msg.textContent='Continue to the verification step to complete your registration.';
+    var button=f.querySelector('button[type=submit]'),payload=new FormData(f);
+    var registration={name:nm,email:em,registeredAt:new Date().toISOString(),website:'https://www.shihanputting.com/',submissionId:window.crypto&&crypto.randomUUID?crypto.randomUUID():Date.now().toString(36)+'-'+Math.random().toString(36).slice(2)};
+    payload.set('website',registration.website);
+    payload.set('registration_record','SHIHAN_START'+btoa(String.fromCharCode.apply(null,new TextEncoder().encode(JSON.stringify(registration))))+'SHIHAN_END');
+    registrationBusy=true;button.disabled=true;button.textContent='Registering…';f.setAttribute('aria-busy','true');msg.textContent='Sending your registration…';
+    var controller=new AbortController(),timeout=setTimeout(function(){controller.abort();},20000);
+    try{
+      var response=await fetch(f.action,{method:'POST',headers:{Accept:'application/json'},body:payload,signal:controller.signal});
+      var data=await response.json();
+      if(!response.ok||data.ok!==true)throw new Error('Registration was not confirmed');
+      f.reset();msg.textContent='Thanks for registering your interest. We’ll be in touch.';
+    }catch(error){msg.textContent='We couldn’t confirm your registration. It may have reached us. Please contact info@shihanputting.com if you are unsure; no automatic retry has been sent.';}
+    finally{clearTimeout(timeout);registrationBusy=false;button.disabled=false;button.textContent='Register';f.removeAttribute('aria-busy');}
   });
 
   var els=document.querySelectorAll('.reveal');

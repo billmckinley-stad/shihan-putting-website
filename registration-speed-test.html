@@ -13,6 +13,15 @@
 <p class="flag">TEST PAGE — not the live registration form</p>
 <h1>ShiHAN registration speed comparison</h1>
 <p>Only use the clearly labelled test details below. The production website, email notifications and registration spreadsheet are unchanged.</p>
+<section aria-labelledby="no-robot-heading">
+<h2 id="no-robot-heading">Test without the robot check</h2>
+<p>These tests submit directly from this page and keep their hidden spam-trap fields. The timer measures clicking Send until the service returns an acceptance response, including network time. Email delivery is separate. Only labelled test registrations are sent.</p>
+<p class="note">Formspree uses a separate free test form with CAPTCHA off and Formshield on. FormSubmit uses its on-page AJAX endpoint with CAPTCHA off for these requests only. This tests the proposed on-page workflow; it changes both the CAPTCHA and submission method compared with the earlier hosted tests.</p>
+<form id="no-robot-formspree"><input type="hidden" name="name" value="TEST ONLY — ShiHAN no-robot speed comparison"><input type="hidden" name="email" value="bill@standrewsdynamics.com"><input type="hidden" name="subject" value="TEST ONLY — ShiHAN no-robot speed comparison"><input class="trap" type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true"><button>Send Formspree test without robot check</button><p id="no-robot-formspree-status" role="status" aria-live="polite"></p></form>
+<form id="no-robot-formsubmit"><input type="hidden" name="name" value="TEST ONLY — ShiHAN no-robot speed comparison"><input type="hidden" name="email" value="bill@standrewsdynamics.com"><input type="hidden" name="_subject" value="TEST ONLY — ShiHAN no-robot speed comparison"><input type="hidden" name="_cc" value="bill@standrewsdynamics.com"><input type="hidden" name="_captcha" value="false"><input type="hidden" name="_template" value="table"><input type="hidden" name="_url" value="https://www.shihanputting.com/registration-speed-test.html"><input class="trap" type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true"><button>Send FormSubmit test without robot check</button><p id="no-robot-formsubmit-status" role="status" aria-live="polite"></p></form>
+<div class="scroll"><table><caption>Automatic timings without robot check</caption><thead><tr><th>Run</th><th>Service</th><th>Seconds</th><th>Outcome</th></tr></thead><tbody id="no-robot-results"></tbody></table></div>
+<p class="note">Timing metadata is saved in this browser, without names or email addresses. There are no automatic retries. A timeout is unconfirmed and may still have reached the service.</p>
+</section>
 <section aria-labelledby="observed-heading">
 <h2 id="observed-heading">Observed comparison — 16 November 2026</h2>
 <p><strong>Formspree returned the robot-check page in about 0.30 seconds; FormSubmit took 49.63 seconds.</strong> These are the same first-stage POST requests, timed in Chrome on the same connection in sequential tests. The browser recorded 49.54 seconds waiting for FormSubmit’s first server response. After the robot check, FormSubmit’s acceptance redirect took about 1.1 minutes, compared with Formspree’s 0.44 seconds.</p>
@@ -66,4 +75,17 @@ button.addEventListener('click',()=>{const p=pending[formId];if(!p)return;const 
 wire('candidate','Formspree');wire('baseline','FormSubmit');
 if(/^https:\/\/formspree\.io\/f\/[a-zA-Z0-9]+$/.test(CONFIG.endpoint)){document.getElementById('candidate').action=CONFIG.endpoint;document.getElementById('candidate-send').disabled=false;document.getElementById('setup').textContent='The hosted robot check remains enabled in Formspree.';}else{document.getElementById('candidate').addEventListener('submit',e=>e.preventDefault());}
 document.getElementById('download').addEventListener('click',()=>{const columns=['id','service','interval','seconds','outcome','startedAt','confirmedAt'];const csv=[columns,...rows.map(r=>columns.map(c=>r[c]||''))].map(row=>row.map(v=>'"'+String(v).replaceAll('"','""')+'"').join(',')).join('\r\n');const url=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));const a=document.createElement('a');a.href=url;a.download='shihan-registration-speed-results.csv';a.click();URL.revokeObjectURL(url);});
+</script><script>
+(()=>{
+const key='shihan-no-robot-speed-v1';let results=[];try{results=JSON.parse(localStorage.getItem(key)||'[]');if(!Array.isArray(results))results=[];}catch{}
+function render(){const body=document.getElementById('no-robot-results');body.replaceChildren();for(const r of results){const tr=document.createElement('tr');for(const v of [r.id,r.service,r.seconds,r.outcome]){const td=document.createElement('td');td.textContent=String(v);tr.append(td);}body.append(tr);}}
+render();
+for(const [service,endpoint] of [['formspree','https://formspree.io/f/xeagabdg'],['formsubmit','https://formsubmit.co/ajax/info@shihanputting.com']]){
+const form=document.getElementById('no-robot-'+service);form.addEventListener('submit',async e=>{
+e.preventDefault();const status=document.getElementById(form.id+'-status'),buttons=document.querySelectorAll('#no-robot-formspree button,#no-robot-formsubmit button');buttons.forEach(b=>b.disabled=true);
+const id=new Date().toISOString(),body=new URLSearchParams(new FormData(form));body.set('test_run',id);body.set('test_started_at',id);
+const controller=new AbortController(),start=performance.now();const clock=setInterval(()=>{status.textContent='Waiting for acceptance… '+((performance.now()-start)/1000).toFixed(1)+' seconds';},100);const timeout=setTimeout(()=>controller.abort(),180000);
+let outcome='Unconfirmed',httpStatus=null;try{const response=await fetch(endpoint,{method:'POST',headers:{Accept:'application/json'},body,signal:controller.signal});httpStatus=response.status;const data=await response.json();const accepted=response.ok&&(service==='formspree'?data.ok===true:(data.success===true||data.success==='true'));outcome=accepted?'Accepted':('Not accepted (HTTP '+response.status+')');}catch(error){outcome=error.name==='AbortError'?'Unconfirmed — 180-second timeout':'Unconfirmed — connection or response error';}finally{clearInterval(clock);clearTimeout(timeout);const seconds=((performance.now()-start)/1000).toFixed(3);results.push({id,service,seconds,outcome,httpStatus});try{localStorage.setItem(key,JSON.stringify(results));}catch{}render();status.textContent=outcome+' after '+seconds+' seconds. Inbox delivery is checked separately.';buttons.forEach(b=>b.disabled=false);}
+});}
+})();
 </script></body></html>

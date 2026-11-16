@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>ShiHAN registration speed test</title>
+<style>
+:root{font-family:Arial,sans-serif;color:#203b66;background:#f5f7fa}*{box-sizing:border-box}body{margin:0;padding:24px}main{max-width:850px;margin:auto}h1{font-size:30px;margin-bottom:12px}h2{font-size:20px}p{line-height:1.6}section{background:white;border:1px solid #d7dfea;border-radius:12px;padding:24px;margin:24px 0}label{display:block;margin:16px 0 6px}input{font:inherit;padding:12px;border:1px solid #8192a8;border-radius:5px;width:100%;max-width:460px}button{font:inherit;background:#203b66;color:white;border:0;border-radius:5px;padding:12px 20px;margin-top:16px;cursor:pointer}button:disabled{opacity:.5;cursor:wait}.note{color:#52647a;font-size:14px}.flag{color:#806200;font-weight:bold}.result{font-weight:bold;min-height:1.5em;margin-top:16px}.trap{display:none}table{border-collapse:collapse;width:100%;font-size:14px}th,td{text-align:left;padding:12px 8px;border-bottom:1px solid #d7dfea}caption{text-align:left;font-weight:bold;margin-bottom:10px}.scroll{overflow:auto}a{color:inherit}.timer{font-variant-numeric:tabular-nums} @media(max-width:500px){body{padding:12px}section{padding:18px}}
+</style>
+</head>
+<body><main>
+<p class="flag">TEST PAGE — not the live registration form</p>
+<h1>ShiHAN registration speed comparison</h1>
+<p>Only use the clearly labelled test details below. The production website, email notifications and registration spreadsheet are unchanged.</p>
+<section aria-labelledby="formspree-heading">
+<h2 id="formspree-heading">Formspree with its hosted robot check</h2>
+<p class="note">Select Send timed test, then complete Formspree’s robot check in the new tab. When its thank-you page appears, return here and record the result. Email delivery is checked separately.</p>
+<form id="candidate" method="POST" target="shihan-formspree-test">
+<label for="test-name">Test name</label><input id="test-name" name="name" value="TEST ONLY — ShiHAN speed comparison" required maxlength="150">
+<label for="test-email">Test email</label><input id="test-email" name="email" type="email" value="bill@standrewsdynamics.com" required>
+<input type="hidden" name="subject" value="TEST ONLY — ShiHAN Formspree speed comparison"><input class="trap" type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+<p id="setup" class="note">The free test form is being configured. No submission is possible yet.</p>
+<button id="candidate-send" disabled>Send timed test</button>
+<div id="candidate-result" class="result timer" role="status" aria-live="polite"></div>
+</form><button type="button" id="candidate-confirm" disabled>Record Formspree thank-you page seen</button></section>
+<section aria-labelledby="baseline-heading">
+<h2 id="baseline-heading">Current FormSubmit service</h2>
+<p class="note">This isolated baseline test opens FormSubmit’s existing robot check in a new tab. When its thank-you or return page appears, return here and record the result, just as for Formspree.</p>
+<form id="baseline" action="https://formsubmit.co/info@shihanputting.com" method="POST" target="shihan-formsubmit-test">
+<input type="hidden" name="name" value="TEST ONLY — ShiHAN speed comparison baseline">
+<input type="hidden" name="email" value="bill@standrewsdynamics.com">
+<input type="hidden" name="_subject" value="TEST ONLY — ShiHAN speed comparison baseline">
+<input type="hidden" name="_cc" value="bill@standrewsdynamics.com">
+<input type="hidden" name="_template" value="table">
+<input type="hidden" name="_url" value="https://www.shihanputting.com/registration-speed-test.html">
+<input type="hidden" name="_next" id="baseline-next">
+<input class="trap" type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true">
+<button>Start timed FormSubmit test</button>
+<div id="baseline-result" class="result timer" role="status" aria-live="polite"></div>
+</form><button type="button" id="baseline-confirm" disabled>Record FormSubmit thank-you page seen</button></section>
+<section><div class="scroll"><table><caption>Results in this browser</caption><thead><tr><th>Run</th><th>Service</th><th>Measured interval</th><th>Seconds</th><th>Outcome</th></tr></thead><tbody id="results"></tbody></table></div><p class="note">Only timing results and test run identifiers are stored in this browser. Names, email addresses and robot-check tokens are not stored here. These manually recorded totals include the robot check and the time taken to switch back and record the result. They are an approximate end-to-end comparison, not isolated server-processing measurements. A thank-you page does not establish inbox delivery.</p><button id="download" type="button">Download timing results</button></section>
+</main><script>
+/* Public form endpoint only; no account credentials or CAPTCHA secret. */
+const CONFIG={endpoint:'https://formspree.io/f/mnpdpkpe'};
+const storageKey='shihan-registration-speed-hosted-results-v1';
+let rows=[];try{rows=JSON.parse(localStorage.getItem(storageKey)||'[]');if(!Array.isArray(rows))rows=[];}catch{rows=[];}
+function render(){const body=document.getElementById('results');body.replaceChildren();for(const r of rows){const tr=document.createElement('tr');for(const v of [r.id,r.service,r.interval,r.seconds,r.outcome]){const td=document.createElement('td');td.textContent=String(v);tr.append(td);}body.append(tr);}}
+function record(r){rows.push(r);try{localStorage.setItem(storageKey,JSON.stringify(rows));}catch{}render();}
+function runId(){return new Date().toISOString().replace(/[:.]/g,'-');}
+render();
+const baseline=document.getElementById('baseline');
+document.getElementById('baseline-next').value=new URL('registration-speed-test.html?baseline_return=1',location.href).href;
+if(new URLSearchParams(location.search).get('baseline_return')==='1')document.getElementById('baseline-result').textContent='FormSubmit returned to this page. Record the result in the original test tab.';
+const pending={};
+function wire(formId,service){const form=document.getElementById(formId),button=document.getElementById(formId+'-confirm'),result=document.getElementById(formId+'-result');
+form.addEventListener('submit',e=>{if(!form.reportValidity()){e.preventDefault();return;}const id=runId();pending[formId]={id,started:Date.now()};for(const [name,value] of Object.entries({test_run:id,test_started_at:new Date().toISOString()})){let field=form.querySelector('[name="'+name+'"]');if(!field){field=document.createElement('input');field.type='hidden';field.name=name;form.append(field);}field.value=value;}button.disabled=false;result.textContent='Test started. Complete the hosted robot check, then return and record the thank-you page.';});
+button.addEventListener('click',()=>{const p=pending[formId];if(!p)return;const seconds=((Date.now()-p.started)/1000).toFixed(2);record({id:p.id,service,interval:'Submit → manually recorded thank-you (includes robot check)',seconds,outcome:'Thank-you page reported',startedAt:new Date(p.started).toISOString(),confirmedAt:new Date().toISOString()});result.textContent='Recorded '+seconds+' seconds including the robot check and time to return here. Inbox delivery still needs verification.';button.disabled=true;delete pending[formId];});}
+wire('candidate','Formspree');wire('baseline','FormSubmit');
+if(/^https:\/\/formspree\.io\/f\/[a-zA-Z0-9]+$/.test(CONFIG.endpoint)){document.getElementById('candidate').action=CONFIG.endpoint;document.getElementById('candidate-send').disabled=false;document.getElementById('setup').textContent='The hosted robot check remains enabled in Formspree.';}else{document.getElementById('candidate').addEventListener('submit',e=>e.preventDefault());}
+document.getElementById('download').addEventListener('click',()=>{const columns=['id','service','interval','seconds','outcome','startedAt','confirmedAt'];const csv=[columns,...rows.map(r=>columns.map(c=>r[c]||''))].map(row=>row.map(v=>'"'+String(v).replaceAll('"','""')+'"').join(',')).join('\r\n');const url=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));const a=document.createElement('a');a.href=url;a.download='shihan-registration-speed-results.csv';a.click();URL.revokeObjectURL(url);});
+</script></body></html>
